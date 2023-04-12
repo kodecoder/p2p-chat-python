@@ -19,7 +19,7 @@ class Server(threading.Thread):
                     s=item.recv(1024)
                     if s!='':
                         chunk=s                
-                        print str('')+':'+chunk
+                        print (str('')+':'+chunk)
                 except:
                     traceback.print_exc(file=sys.stdout)
                     break
@@ -34,22 +34,22 @@ class Client(threading.Thread):
         self.sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         try:
-            host=raw_input("Enter the hostname\n>>")            
-            port=int(raw_input("Enter the port\n>>"))
+            host=input("Enter the hostname\n>>")            
+            port=int(input("Enter the port\n>>"))
         except EOFError:
             print "Error"
             return 1
         
-        print "Connecting\n"
+        print( "Connecting...\n")
         s=''
         self.connect(host,port)
-        print "Connected\n"
+        print( "Connected to " +host")
         receive=self.sock
         time.sleep(1)
         srv=Server()
         srv.initialise(receive)
         srv.daemon=True
-        print "Starting service"
+        print( "Starting service")
         srv.start()
         while 1:            
             #print "Waiting for message\n"
@@ -58,10 +58,10 @@ class Client(threading.Thread):
                 break
             if msg=='':
                 continue
-            #print "Sending\n"
+            #print( "Sending...\n")
             self.client(host,port,msg)
         return(1)
 if __name__=='__main__':
-    print "Starting client"
+    print( "Starting client")
     cli=Client()    
     cli.start()
